@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
@@ -6,6 +7,15 @@ import { Chrome } from "lucide-react";
 
 export function LoginPage() {
     const { signInWithGoogle, loading } = useAuth();
+
+    useEffect(() => {
+        if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+            console.error("CRITICAL: NEXT_PUBLIC_FIREBASE_API_KEY is missing!");
+            alert("CRITICAL ERROR: Firebase API Key is missing in this build. Please check Vercel Environment Variables.");
+        } else {
+            console.log("Firebase API Key is present (characters: " + process.env.NEXT_PUBLIC_FIREBASE_API_KEY.length + ")");
+        }
+    }, []);
 
     if (loading) return null;
 
